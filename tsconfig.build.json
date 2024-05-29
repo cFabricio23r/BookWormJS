@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "bookworm/node_modules",
+    "../test", "dist", "**/*spec.ts"]
+}
