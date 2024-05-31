@@ -38,13 +38,6 @@ export class RegisterDTO {
 }
 
 export class StoreEditSummaryDTO {
-    @IsString()
     @IsNotEmpty()
-    @ApiProperty()
-    title: string;
-
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty()
-    author: string;
+    file: Express.Multer.File;
 }

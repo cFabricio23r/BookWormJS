@@ -1,7 +1,7 @@
 import {
   Body,
   Controller, Delete, Get, Param, ParseIntPipe,
-  Post, UseGuards,
+  Post, UploadedFile, UseGuards,
 } from '@nestjs/common';
 import { SummariesService } from './summaries.service';
 import {ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
@@ -14,12 +14,12 @@ import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 export class SummariesController {
   constructor(private readonly summariesService: SummariesService) {}
 
-  @Post()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @Post('test')
+  //@UseGuards(JwtAuthGuard)
+  //@ApiBearerAuth()
   @ApiCreatedResponse({ type: ResponseEntity })
-  async create(@Body() createSummaryDto: StoreEditSummaryDTO): Promise<ResponseEntity> {
-    return this.summariesService.create(createSummaryDto);
+  async create(): Promise<any> {
+    return 'test';
   }
 
   @Get()

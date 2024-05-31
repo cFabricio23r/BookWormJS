@@ -1,18 +1,19 @@
 import {HttpStatus, Injectable} from '@nestjs/common';
-import { JwtService } from "@nestjs/jwt";
 import { PrismaService } from "../prisma/prisma.service";
 import {ResponseEntity} from "../utils/entity/utils.entity";
 import {StoreEditSummaryDTO} from "../utils/dto/utils.dto";
+import { pdf } from 'pdf-parse';
+import * as fs from 'fs'
 
 @Injectable()
 export class SummariesService {
-    constructor(/*private prisma: PrismaService, private jwtService: JwtService*/) {}
+    constructor(private prisma: PrismaService) {}
 
-    async create(storeEditSummaryDTO: StoreEditSummaryDTO): Promise<ResponseEntity> {
+    async create(): Promise<any> {
 
         return {
-            data: storeEditSummaryDTO,
-            message: "Summary created",
+            data: 'file.originalname',
+            message: "Summary created successfully",
             status: HttpStatus.CREATED
         }
     }
@@ -26,6 +27,10 @@ export class SummariesService {
     }
 
     async remove(id: number) {
+
+    }
+
+    async generateSummary() {
 
     }
 }
