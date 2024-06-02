@@ -1,15 +1,37 @@
 import {HttpStatus, Injectable} from '@nestjs/common';
 import { PrismaService } from "../prisma/prisma.service";
-import {ResponseEntity} from "../utils/entity/utils.entity";
 import {StoreEditSummaryDTO} from "../utils/dto/utils.dto";
-import { pdf } from 'pdf-parse';
+const pdfParse = require('pdf-parse');
 import * as fs from 'fs'
+import {OpenaiService} from "../openai/openai.service";
 
 @Injectable()
 export class SummariesService {
-    constructor(private prisma: PrismaService) {}
+    constructor(
+        private prisma: PrismaService,
+        private openai: OpenaiService
+    ) {}
 
-    async create(): Promise<any> {
+    async create(storeEditSummaryDTO: StoreEditSummaryDTO): Promise<any> {
+
+        const fileBuffer = fs.readFileSync(`uploads/${storeEditSummaryDTO.file.filename}`);
+
+        const pdfFile = await pdfParse(fileBuffer);
+
+        const result = this.openai.generateSummary(pdfFile.text);
+
+
+
+        /*const newSummary = await this.prisma.summary.create({
+            data: {
+                title: 'title',
+                author: 'author',
+                year: 'year',
+                summary: 'summary',
+                context: 'context',
+                key_aspects: 'key_aspects',
+            }
+        });*/
 
         return {
             data: 'file.originalname',

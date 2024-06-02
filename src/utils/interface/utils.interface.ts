@@ -6,5 +6,5 @@ export interface IChatRequest {
 
 export interface IChatResponse {
     success: boolean;
-    result: OpenAI.ChatCompletion.Choice;
+    result:  IterableIterator<[number, OpenAI.Chat.Completions.ChatCompletionMessageToolCall]>;
 }
