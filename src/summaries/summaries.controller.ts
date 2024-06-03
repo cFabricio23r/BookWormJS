@@ -1,16 +1,29 @@
 import {
   Body,
-  Controller, Delete, Get, Param, Request,
-  Post, UploadedFile, UseGuards, UseInterceptors, ParseUUIDPipe,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Request,
+  Post,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { SummariesService } from './summaries.service';
-import {ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
-import {ResponseEntity} from "../utils/entity/utils.entity";
-import {StoreEditSummaryDTO} from "../utils/dto/utils.dto";
-import {JwtAuthGuard} from "../auth/jwt-auth.guard";
-import {FileInterceptor} from "@nestjs/platform-express";
-import {diskStorage} from "multer";
-import {editFileName, pdfFileFilter} from "../utils/functions/file.utils";
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { ResponseEntity } from '../utils/entity/utils.entity';
+import { StoreEditSummaryDTO } from '../utils/dto/utils.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { editFileName, pdfFileFilter } from '../utils/functions/file.utils';
 
 @Controller('summaries')
 @ApiTags('summaries')
@@ -20,13 +33,15 @@ export class SummariesController {
   @Post()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @UseInterceptors(FileInterceptor('file', {
-    storage: diskStorage({
-      destination: './uploads',
-      filename: editFileName,
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: editFileName,
+      }),
+      fileFilter: pdfFileFilter,
     }),
-    fileFilter: pdfFileFilter
-  }))
+  )
   @ApiCreatedResponse({ type: ResponseEntity })
   async create(
     @Request()
@@ -54,7 +69,7 @@ export class SummariesController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: ResponseEntity })
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
-      return this.summariesService.findOne(id);
+    return this.summariesService.findOne(id);
   }
 
   @Delete(':id')

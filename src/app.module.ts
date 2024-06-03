@@ -4,7 +4,7 @@ import { SummariesModule } from './summaries/summaries.module';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import {OpenaiModule} from "./openai/openai.module";
+import { OpenaiModule } from './openai/openai.module';
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import {OpenaiModule} from "./openai/openai.module";
     SummariesModule,
     UsersModule,
     EventEmitterModule.forRoot(),
-    OpenaiModule
+    OpenaiModule,
   ],
   controllers: [],
   providers: [],

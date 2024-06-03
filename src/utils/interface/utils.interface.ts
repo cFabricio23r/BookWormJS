@@ -1,5 +1,4 @@
 export interface messageBody {
-    role: string,
-    content: string
+  role: string;
+  content: string;
 }
-
