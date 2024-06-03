@@ -1,5 +1,7 @@
 import { RunnableToolFunction } from 'openai/lib/RunnableFunction';
 
+export const openModel = 'gpt-3.5-turbo';
+
 export const toolCalls: RunnableToolFunction<any>[] = [
   {
     type: 'function',
@@ -64,3 +66,9 @@ async function book_summary() {
 
 export const defaultMessage =
   'Perform function requests for the user following the instructions below';
+
+export const project = 'test';
+
+export const location = 'us-central1';
+
+export const vertexModel = '';
