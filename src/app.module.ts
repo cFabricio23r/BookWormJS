@@ -8,6 +8,7 @@ import {OpenaiModule} from "./openai/openai.module";
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     AuthModule,
     SummariesModule,
     UsersModule,

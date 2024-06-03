@@ -6,8 +6,8 @@ import {OpenaiService} from "../openai/openai.service";
 
 @Module({
   controllers: [SummariesController],
-  providers: [SummariesService],
-  imports: [PrismaModule,OpenaiService],
+  providers: [SummariesService,OpenaiService],
+  imports: [PrismaModule],
   exports: [SummariesService],
 })
 export class SummariesModule {}

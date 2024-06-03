@@ -10,7 +10,7 @@ import {StoreEditSummaryDTO} from "../utils/dto/utils.dto";
 import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {diskStorage} from "multer";
-import {editFileName, pdfFileFilter} from "../utils/file/file.utils";
+import {editFileName, pdfFileFilter} from "../utils/functions/file.utils";
 
 @Controller('summaries')
 @ApiTags('summaries')

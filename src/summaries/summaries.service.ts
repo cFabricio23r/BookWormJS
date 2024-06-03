@@ -18,23 +18,21 @@ export class SummariesService {
 
         const pdfFile = await pdfParse(fileBuffer);
 
-        const result = this.openai.generateSummary(pdfFile.text);
+        const result = await this.openai.generateSummary(pdfFile.text);
 
-
-
-        /*const newSummary = await this.prisma.summary.create({
+       /* const newSummary = await this.prisma.summary.create({
             data: {
-                title: 'title',
-                author: 'author',
+                title: result.result.title,
+                author: result.result.author,
                 year: 'year',
                 summary: 'summary',
                 context: 'context',
                 key_aspects: 'key_aspects',
             }
-        });*/
-
+        });
+*/
         return {
-            data: 'file.originalname',
+            data: result,
             message: "Summary created successfully",
             status: HttpStatus.CREATED
         }
