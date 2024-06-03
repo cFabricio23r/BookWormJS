@@ -3,10 +3,9 @@ import {
   defaultMessage,
   location,
   project,
-  toolCalls,
+  toolCallsVertex,
   vertexModel,
 } from '../utils/constants/constants.utils';
-import { RunnableToolFunction } from 'openai/lib/RunnableFunction';
 import { VertexAI } from '@google-cloud/vertexai';
 
 export class VertexService {
@@ -16,16 +15,18 @@ export class VertexService {
     this.vertexAIService = new VertexAI({
       project: project,
       location: location,
+      googleAuthOptions: {
+        credentials: {
+          client_email: process.env.GOOGLE_CLIENT_EMAIL,
+          private_key: process.env.GOOGLE_PRIVATE_KEY,
+        },
+      },
     });
   }
 
   async generateSummary(text: string): Promise<any> {
     return {
-      data: await this.functionCall(
-        vertexModel,
-        text,
-        toolCalls,
-      ),
+      data: await this.functionCall(vertexModel, text, toolCallsVertex),
       context: [systemMessage(defaultMessage), userMessage(text)],
     };
   }
@@ -46,31 +47,19 @@ export class VertexService {
     return chatCompletion.choices[0]?.message?.content;
   }*/
 
-  async functionCall(
-    model: string,
-    text: any,
-    toolCalls: any,
-  ): Promise<any> {
+  async functionCall(model: string, text: any, toolCalls: any): Promise<any> {
     const generativeModel = this.vertexAIService.getGenerativeModel({
       model: model,
     });
 
     const chat = generativeModel.startChat({
       tools: toolCalls,
-      systemInstruction: defaultMessage,
     });
 
-    const result = await chat.sendMessage([
-      {
-        text: defaultMessage,
-      },
-      {
-        text: text
-      }
-    ]);
+    await chat.sendMessage(defaultMessage);
 
-    console.log(result.response);
+    const result = await chat.sendMessage(text);
 
-    return result.response;
+    return result.response.candidates[0].content.parts[0].functionCall.args;
   }
 }

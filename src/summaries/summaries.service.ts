@@ -6,12 +6,13 @@ const pdfParse = require('pdf-parse');
 import * as fs from 'fs';
 import { OpenaiService } from '../openai/openai.service';
 import { SummaryEntity } from '../utils/entity/utils.entity';
+//import { VertexService } from '../vertex/vertex.service';
 
 @Injectable()
 export class SummariesService {
   constructor(
     private prisma: PrismaService,
-    private openai: OpenaiService,
+    private openai: OpenaiService, //private vertexai: VertexService,
   ) {}
 
   async create(storeEditSummaryDTO: StoreEditSummaryDTO): Promise<any> {
@@ -23,7 +24,7 @@ export class SummariesService {
 
     const newSummary = await this.prisma.summary.create({
       data: {
-        title: result.data.title,
+        title: result?.data?.title,
         author: result.data.author,
         year: result.data.year,
         summary: result.data.summary,
