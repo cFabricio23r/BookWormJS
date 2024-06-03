@@ -1,7 +1,7 @@
 import {
   Body,
-  Controller, Delete, Get, Param, ParseFilePipe, ParseIntPipe,
-  Post, UploadedFile, UseGuards, UseInterceptors, ValidationPipe,
+  Controller, Delete, Get, Param, Request,
+  Post, UploadedFile, UseGuards, UseInterceptors, ParseUUIDPipe,
 } from '@nestjs/common';
 import { SummariesService } from './summaries.service';
 import {ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
@@ -29,12 +29,15 @@ export class SummariesController {
   }))
   @ApiCreatedResponse({ type: ResponseEntity })
   async create(
+    @Request()
+    req: any,
     @UploadedFile()
     file: Express.Multer.File,
     @Body()
-    storeEditSummaryDTO: StoreEditSummaryDTO
+    storeEditSummaryDTO: StoreEditSummaryDTO,
   ): Promise<ResponseEntity> {
     storeEditSummaryDTO.file = file;
+    storeEditSummaryDTO.userId = req.user.userId;
     return this.summariesService.create(storeEditSummaryDTO);
   }
 
@@ -50,7 +53,7 @@ export class SummariesController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: ResponseEntity })
-  async findOne(@Param('id', ParseIntPipe) id: number) {
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
       return this.summariesService.findOne(id);
   }
 
@@ -58,7 +61,7 @@ export class SummariesController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: ResponseEntity })
-  async remove(@Param('id', ParseIntPipe) id: number) {
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.summariesService.remove(id);
   }
 }

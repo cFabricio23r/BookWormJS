@@ -12,14 +12,17 @@ export class OpenaiService {
     }
 
     async generateSummary(text: string): Promise<any> {
-        return this.functionCall('gpt-3.5-turbo', text ? [userMessage(text)] : [], toolCalls);
+        return {
+            data: await this.functionCall('gpt-3.5-turbo', text ? [systemMessage(defaultMessage), userMessage(text)] : [], toolCalls),
+            context: [systemMessage(defaultMessage), userMessage(text)]
+        };
     }
 
     async functionCall(model: string, messages: any, toolCalls: RunnableToolFunction<any>[] ): Promise<Object> {
         const [runner] = await Promise.all([this.openAIService.beta.chat.completions.runTools({
             model,
             tools: toolCalls,
-            messages: [systemMessage(defaultMessage), ...messages]
+            messages: [...messages]
         })]);
 
         return JSON.parse((await runner.finalFunctionCall()).arguments);

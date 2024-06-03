@@ -26,13 +26,13 @@ model User {
 
 model Summary {
   id          String   @id @default(uuid())
+  userId      String   @map("user_id")
   title       String
   author      String
   year        String
   summary     String
   key_aspects Json
   context     Json
-  userId      String   @default(uuid())
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

@@ -41,4 +41,8 @@ export class StoreEditSummaryDTO {
     @IsString()
     @IsOptional()
     file: Express.Multer.File;
+
+    @IsString()
+    @IsOptional()
+    userId: string;
 }
