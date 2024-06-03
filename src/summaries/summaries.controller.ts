@@ -19,7 +19,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { ResponseEntity } from '../utils/entity/utils.entity';
-import { StoreEditSummaryDTO } from '../utils/dto/utils.dto';
+import { ChatSummaryDTO, StoreEditSummaryDTO } from '../utils/dto/utils.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -70,6 +70,19 @@ export class SummariesController {
   @ApiOkResponse({ type: ResponseEntity })
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.summariesService.findOne(id);
+  }
+
+  @Post(':id/chat')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: ResponseEntity })
+  async chat(
+    @Param('id', ParseUUIDPipe)
+    id: string,
+    @Body()
+    chatSummaryDTO: ChatSummaryDTO,
+  ) {
+    return this.summariesService.chat(id, chatSummaryDTO);
   }
 
   @Delete(':id')

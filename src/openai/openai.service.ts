@@ -22,6 +22,22 @@ export class OpenaiService {
     };
   }
 
+  async chatSummary(question: string, context: any): Promise<any> {
+    return {
+      data: await this.chatCompletion([...context, userMessage(question)]),
+      context: [...context, userMessage(question)],
+    };
+  }
+
+  async chatCompletion(messages: any): Promise<any> {
+    const chatCompletion = await this.openAIService.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: messages,
+    });
+
+    return chatCompletion.choices[0]?.message?.content;
+  }
+
   async functionCall(
     model: string,
     messages: any,

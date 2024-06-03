@@ -52,3 +52,10 @@ export class StoreEditSummaryDTO {
   @IsOptional()
   userId: string;
 }
+
+export class ChatSummaryDTO {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  question: string;
+}

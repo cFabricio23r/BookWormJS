@@ -1,7 +1,8 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { StoreEditSummaryDTO } from '../utils/dto/utils.dto';
-import pdfParse from 'pdf-parse';
+import { ChatSummaryDTO, StoreEditSummaryDTO } from '../utils/dto/utils.dto';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const pdfParse = require('pdf-parse');
 import * as fs from 'fs';
 import { OpenaiService } from '../openai/openai.service';
 import { SummaryEntity } from '../utils/entity/utils.entity';
@@ -35,6 +36,27 @@ export class SummariesService {
     return {
       data: new SummaryEntity(newSummary),
       message: 'Summary created successfully',
+      status: HttpStatus.CREATED,
+    };
+  }
+
+  async chat(id: string, chatSummaryDTO: ChatSummaryDTO): Promise<any> {
+    const summary = await this.prisma.summary.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    const result = await this.openai.chatSummary(
+      chatSummaryDTO.question,
+      summary.context,
+    );
+
+    return {
+      data: {
+        answer: result.data,
+      },
+      message: 'Chat answer created successfully',
       status: HttpStatus.CREATED,
     };
   }
